@@ -3,37 +3,42 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    // Check whether Admin role already exists
-    const existingRole = await prisma.role.findFirst({
-      where: {
-        name: "Admin",
-      },
-    });
+    const roles = [
+      "Admin",
+      "Manager",
+      "Accountant",
+      "Cashier",
+      "Auditor",
+    ];
 
-    if (existingRole) {
-      return NextResponse.json({
-        message: "Admin role already exists",
-        role: existingRole,
+    const createdRoles = [];
+
+    for (const roleName of roles) {
+      const role = await prisma.role.upsert({
+        where: {
+          name: roleName,
+        },
+        update: {},
+        create: {
+          name: roleName,
+        },
       });
+
+      createdRoles.push(role);
     }
 
-    // Create Admin role
-    const role = await prisma.role.create({
-      data: {
-        name: "Admin",
-      },
-    });
-
     return NextResponse.json({
-      message: "Admin role created successfully",
-      role,
+      success: true,
+      message: "Default roles seeded successfully.",
+      roles: createdRoles,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Seed Error:", error);
 
     return NextResponse.json(
       {
-        message: "Something went wrong",
+        success: false,
+        message: "Something went wrong.",
       },
       { status: 500 }
     );

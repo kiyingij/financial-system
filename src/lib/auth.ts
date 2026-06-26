@@ -39,7 +39,8 @@ export const authOptions: NextAuthOptions = {
 
                     include: {
                         role: true,
-                    }
+                        company: true,
+                    },
                 });
 
                 //user doesn't exist
@@ -65,6 +66,7 @@ export const authOptions: NextAuthOptions = {
                     name: user.name,
                     email: user.email,
                     role: user.role.name,
+                    company: user.company.name,
                 };
             },
         }),
@@ -83,6 +85,7 @@ export const authOptions: NextAuthOptions = {
                 token.role = user.role;
                 token.name = user.name;
                 token.email = user.email;
+                token.company = user.company;
             }
             return token;
         },
