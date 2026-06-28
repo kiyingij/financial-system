@@ -1,3 +1,7 @@
+/**
+ * System Roles
+ * These are the default roles used throughout the application.
+ */
 export const ROLES = {
   ADMIN: "Admin",
   MANAGER: "Manager",
@@ -6,5 +10,4 @@ export const ROLES = {
   AUDITOR: "Auditor",
 } as const;
 
-export type RoleName =
-  (typeof ROLES)[keyof typeof ROLES];
+export type RoleName = (typeof ROLES)[keyof typeof ROLES];

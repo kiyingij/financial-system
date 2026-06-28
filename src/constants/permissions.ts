@@ -1,4 +1,5 @@
 export const PERMISSIONS = {
+
   DASHBOARD: {
     VIEW: "dashboard.view",
   },
@@ -11,11 +12,10 @@ export const PERMISSIONS = {
   },
 
   ROLES: {
+    CREATE: "roles.create",
     READ: "roles.read",
     UPDATE: "roles.update",
+    DELETE: "roles.delete",
   },
 
-  COMPANIES: {
-    MANAGE: "companies.manage",
-  },
 } as const;
