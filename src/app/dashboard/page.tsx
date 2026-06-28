@@ -1,8 +1,27 @@
+import { redirect } from "next/navigation";
+
 import AppLayout from "@/components/layout/AppLayout";
+import { getSession } from "@/lib/session";
+import { hasPermission } from "@/lib/permissions";
+import { PERMISSIONS } from "@/constants/permissions";
 
+export default async function DashboardPage() {
 
+  const session = await getSession();
 
-export default function DashboardPage() {
+  if (!session) {
+    redirect("/login");
+  }
+
+  if (
+    !hasPermission(
+      session.user.role,
+      PERMISSIONS.DASHBOARD.VIEW
+    )
+  ) {
+    redirect("/access-denied");
+  }
+
   return (
     <AppLayout>
 
