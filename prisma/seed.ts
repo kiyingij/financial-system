@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { PERMISSIONS } from "../src/constants/permissions";
 
 const prisma = new PrismaClient();
 
@@ -73,6 +74,51 @@ async function main() {
   });
 
   console.log("✅ Roles created.");
+
+  // ----------------------------
+// Permissions
+// ----------------------------
+
+// Flatten the permission object into an array.
+const permissionNames = Object.values(PERMISSIONS)
+  .flatMap((group) => Object.values(group));
+
+for (const permissionName of permissionNames) {
+  await prisma.permission.upsert({
+    where: {
+      name: permissionName,
+    },
+    update: {},
+    create: {
+      name: permissionName,
+    },
+  });
+}
+
+console.log("✅ Permissions created.");
+
+// ----------------------------
+// Assign Permissions to Roles
+// ----------------------------
+
+// Give the Admin role every permission
+await prisma.role.update({
+  where: {
+    id: adminRole.id,
+  },
+  data: {
+    permissions: {
+      set: [], // Clear existing assignments (safe for reseeding)
+      connect: await prisma.permission.findMany({
+        select: {
+          id: true,
+        },
+      }),
+    },
+  },
+});
+
+console.log("✅ Admin permissions assigned.");
 
   // ----------------------------
   // Admin User
