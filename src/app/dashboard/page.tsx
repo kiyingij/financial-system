@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import AppLayout from "@/components/layout/AppLayout";
 import { getSession } from "@/lib/session";
-import { hasPermission } from "@/lib/permissions";
+import { hasPermission } from "@/lib/rbac";
 import { PERMISSIONS } from "@/constants/permissions";
 
 export default async function DashboardPage() {
