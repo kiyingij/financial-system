@@ -98,6 +98,45 @@ for (const permissionName of permissionNames) {
 console.log("✅ Permissions created.");
 
 // ----------------------------
+// Counters
+// ----------------------------
+
+await prisma.counter.upsert({
+  where: { name: "CUSTOMER" },
+  update: {},
+  create: {
+    name: "CUSTOMER",
+    prefix: "CUST",
+    value: 0,
+    digits: 6,
+  },
+});
+
+await prisma.counter.upsert({
+  where: { name: "SUPPLIER" },
+  update: {},
+  create: {
+    name: "SUPPLIER",
+    prefix: "SUP",
+    value: 0,
+    digits: 6,
+  },
+});
+
+await prisma.counter.upsert({
+  where: { name: "INVOICE" },
+  update: {},
+  create: {
+    name: "INVOICE",
+    prefix: "INV",
+    value: 0,
+    digits: 6,
+  },
+});
+
+console.log("✅ Counters created.");
+
+// ----------------------------
 // Assign Permissions to Roles
 // ----------------------------
 

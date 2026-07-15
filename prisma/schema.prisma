@@ -21,6 +21,55 @@ model Company {
 
   users User[]
 
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  customers Customer[]
+}
+
+model Counter {
+  id        String   @id @default(cuid())
+
+  name      String   @unique
+  prefix    String
+  value     Int      @default(0)
+  digits    Int      @default(6)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id String @id @default(cuid())
+
+  customerNumber String @unique
+
+  customerName String
+  companyName  String?
+
+  email            String?
+  phone            String
+  alternativePhone String?
+
+  tinNumber String?
+  vatNumber String?
+
+  address String?
+  city    String?
+  country String?
+
+  creditLimit    Decimal? @db.Decimal(18, 2)
+  openingBalance Decimal  @default(0) @db.Decimal(18, 2)
+
+  isActive Boolean @default(true)
+
+  notes String?
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation("CustomerCreator", fields: [createdById], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -49,6 +98,8 @@ model User {
 
   companyId String?
   company   Company? @relation(fields: [companyId], references: [id])
+
+  customersCreated Customer[] @relation("CustomerCreator")
 
   auditLogs AuditLog[]
 

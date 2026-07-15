@@ -1,0 +1,16 @@
+/**
+ * Custom API Error
+ *
+ * Allows us to throw business errors
+ * with an HTTP status code.
+ */
+export class ApiError extends Error {
+  statusCode: number;
+
+  constructor(message: string, statusCode = 400) {
+    super(message);
+
+    this.name = "ApiError";
+    this.statusCode = statusCode;
+  }
+}
